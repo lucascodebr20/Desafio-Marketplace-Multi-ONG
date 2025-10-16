@@ -28,12 +28,9 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-
-                        .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/cadastrar").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/login","/auth/cadastrar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/recuperar-senha/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-
+                        .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
