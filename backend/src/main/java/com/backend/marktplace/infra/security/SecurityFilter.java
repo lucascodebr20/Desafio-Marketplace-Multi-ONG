@@ -35,7 +35,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             if (loginIdString != null && !loginIdString.isEmpty()) {
                 try {
                     UUID userId = UUID.fromString(loginIdString);
-                    UserDetails user = userRepository.findByIdUser(userId);
+                    UserDetails user = userRepository.findByUserId(userId);
                     var authentication = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 } catch (IllegalArgumentException e) {

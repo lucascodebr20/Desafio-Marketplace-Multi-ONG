@@ -30,14 +30,10 @@ public class RegisterUserService {
 
         UserRole requestedRole;
 
-        try {
-            requestedRole = UserRole.valueOf(registerDTO.userRole().toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Papel de usuário inválido.");
-        }
+        requestedRole = UserRole.valueOf(registerDTO.userRole().toUpperCase());
 
         if (requestedRole.equals(UserRole.ADMIN)) {
-            throw new IllegalArgumentException("Não é permitido cadastrar-se como administrador.");
+            throw new IllegalArgumentException();
         }
 
         String encryptedPassword = passwordEncoder.encode(registerDTO.password());

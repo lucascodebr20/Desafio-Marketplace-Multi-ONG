@@ -22,7 +22,7 @@ public class TokenService {
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
-                    .withSubject(String.valueOf(userEntity.getIdUser()))
+                    .withSubject(String.valueOf(userEntity.getUserId()))
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {

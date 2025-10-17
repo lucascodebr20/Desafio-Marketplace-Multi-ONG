@@ -16,7 +16,7 @@ public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID idUser;
+    private UUID userId;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -29,6 +29,9 @@ public class UserEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
+    @OneToOne(mappedBy = "user")
+    private OrganizationEntity organization;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -65,12 +68,12 @@ public class UserEntity implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
-    public UUID getIdUser() {
-        return idUser;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setIdUser(UUID idUser) {
-        this.idUser = idUser;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
@@ -101,4 +104,11 @@ public class UserEntity implements UserDetails {
         this.name = name;
     }
 
+    public OrganizationEntity getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(OrganizationEntity organization) {
+        this.organization = organization;
+    }
 }
