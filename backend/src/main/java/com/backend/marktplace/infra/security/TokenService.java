@@ -18,11 +18,11 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
-    public String generateToken(UserEntity userEntity){
+    public String generateToken(UserEntity userEntity) {
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
-                    .withSubject(String.valueOf(userEntity.getIdUser()))
+                    .withSubject(String.valueOf(userEntity.getUserId()))
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
@@ -39,7 +39,7 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException exception){
-            return "";
+            return null;
         }
     }
 
