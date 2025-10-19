@@ -1,6 +1,6 @@
 package com.backend.marktplace.service.auth;
 
-import com.backend.marktplace.dto.request.auth.RegisterDTO;
+import com.backend.marktplace.dto.request.auth.RegisterUserDTO;
 import com.backend.marktplace.entity.UserEntity;
 import com.backend.marktplace.enums.UserRole;
 import com.backend.marktplace.infra.security.TokenService;
@@ -21,25 +21,25 @@ public class RegisterUserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public String registerUser(RegisterDTO registerDTO) {
+    public String registerUser(RegisterUserDTO registerUserDTO) {
 
-        if (userRepository.findByEmail(registerDTO.email()) != null) {
+        if (userRepository.findByEmail(registerUserDTO.email()) != null) {
             throw new RuntimeException("e-mail já cadastrado.");
         }
 
         UserRole requestedRole;
 
-        requestedRole = UserRole.valueOf(registerDTO.userRole().toUpperCase());
+        requestedRole = UserRole.valueOf(registerUserDTO.userRole().toUpperCase());
 
         if (requestedRole.equals(UserRole.ADMIN)) {
             throw new IllegalArgumentException();
         }
 
-        String encryptedPassword = passwordEncoder.encode(registerDTO.password());
+        String encryptedPassword = passwordEncoder.encode(registerUserDTO.password());
         UserEntity user = new UserEntity();
-        user.setEmail(registerDTO.email().toLowerCase());
+        user.setEmail(registerUserDTO.email().toLowerCase());
         user.setPassword(encryptedPassword);
-        user.setName(registerDTO.name());
+        user.setName(registerUserDTO.name());
         user.setUserRole(requestedRole);
         userRepository.save(user);
         return tokenService.generateToken(user);
