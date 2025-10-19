@@ -6,6 +6,7 @@ import Register from '../pages/auth/Register.jsx';
 import DashBoard from '../pages/dashboard/DashBoard.jsx';
 import RegisterProduct from '../pages/dashboard/RegisterProduct.jsx';
 import ListProduct from '../pages/dashboard/ListProduct.jsx';
+import UpdateProduct from '../pages/dashboard/UpdateProduct.jsx';
 
 function Index() {
   return (
@@ -16,6 +17,7 @@ function Index() {
       <Route path="/dashboard" element={<DashBoard />}>
         <Route path="register-product" element={<RegisterProduct />} />
         <Route path="list-product" element={<ListProduct />} />
+        <Route path="update-product/:productId" element={<UpdateProduct />} />
       </Route>
     </Routes>
   );
