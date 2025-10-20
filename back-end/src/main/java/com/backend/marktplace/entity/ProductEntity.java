@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tb_product")
@@ -12,19 +11,20 @@ public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private UUID productId;
+    private Long productId;
 
     @Column(nullable = false)
     private String nameProduct;
 
+    @Column(length = 1000)
     private String description;
 
+    @Column(nullable = false)
     private BigDecimal price;
 
     private String imageUrl;
-
+    private String imageName;
     private int stockQty;
-
     private int weightGrams;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -36,12 +36,8 @@ public class ProductEntity {
     @JoinColumn(nullable = false, name = "organization_id")
     private OrganizationEntity organization;
 
-    public UUID getProductId() {
+    public Long getProductId() {
         return productId;
-    }
-
-    public void setProductId(UUID productId) {
-        this.productId = productId;
     }
 
     public String getNameProduct() {
@@ -106,6 +102,14 @@ public class ProductEntity {
 
     public void setOrganization(OrganizationEntity organization) {
         this.organization = organization;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
 }

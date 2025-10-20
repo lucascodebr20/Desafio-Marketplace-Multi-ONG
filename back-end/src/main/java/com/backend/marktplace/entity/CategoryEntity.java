@@ -11,7 +11,7 @@ public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private UUID categoryId;
+    private Long categoryId;
 
     private String nameCategory;
 
@@ -20,10 +20,6 @@ public class CategoryEntity {
 
     public UUID getCategoryId() {
         return categoryId;
-    }
-
-    public void setCategoryId(UUID categoryId) {
-        this.categoryId = categoryId;
     }
 
     public String getNameCategory() {

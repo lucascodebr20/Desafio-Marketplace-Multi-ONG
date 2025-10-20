@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -35,8 +36,15 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String roleName = userRole.name();
-        return List.of(new SimpleGrantedAuthority("ROLE_" + roleName));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.name()));
+        if (userRole == UserRole.ADMIN) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_ONG"));
+        }
+        if (userRole == UserRole.ONG) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));}
+        return authorities;
     }
 
     @Override
@@ -71,10 +79,6 @@ public class UserEntity implements UserDetails {
 
     public UUID getUserId() {
         return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
     }
 
     public String getEmail() {
@@ -112,4 +116,5 @@ public class UserEntity implements UserDetails {
     public void setOrganization(OrganizationEntity organization) {
         this.organization = organization;
     }
+
 }

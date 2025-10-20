@@ -1,6 +1,6 @@
 package com.backend.marktplace.controller.auth;
 
-import com.backend.marktplace.dto.request.auth.RegisterDTO;
+import com.backend.marktplace.dto.request.auth.RegisterUserDTO;
 import com.backend.marktplace.service.auth.RegisterUserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,14 +19,14 @@ public class RegisterUserController {
     @Autowired
     RegisterUserService registerUserService;
 
-    @PostMapping("/register")
-    public ResponseEntity<String> registerUser (@RequestBody RegisterDTO registerDTO, HttpServletResponse response) {
+    @PostMapping("/register-user")
+    public ResponseEntity<String> registerUser (@RequestBody RegisterUserDTO registerUserDTO, HttpServletResponse response) {
 
         try {
-            String token = registerUserService.registerUser(registerDTO);
+            String token = registerUserService.registerUser(registerUserDTO);
             Cookie cookie = new Cookie("JWT_TOKEN", token);
             cookie.setHttpOnly(true);
-            cookie.setSecure(false);
+            cookie.setSecure(true);
             cookie.setMaxAge(30 * 24 * 60 * 60);
             cookie.setPath("/");
             response.addCookie(cookie);
@@ -44,6 +44,9 @@ public class RegisterUserController {
                     .body("Erro interno no servidor.");
         }
     }
+
+
+
 
 
 }

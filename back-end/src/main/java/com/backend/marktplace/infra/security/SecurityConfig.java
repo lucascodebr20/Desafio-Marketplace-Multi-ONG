@@ -31,9 +31,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/auth/login","/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/recovery-password/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/organization/**").hasRole(UserRole.USER.name())
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/images/**").permitAll()
+                        .requestMatchers("/product/**").permitAll()
+                        .requestMatchers("/organization/**").hasRole(UserRole.USER.name())
+                        .requestMatchers("/user/**").hasRole(UserRole.USER.name())
+                        .requestMatchers("/order/**").hasRole(UserRole.USER.name())
+                        .requestMatchers("/dashboard-product/**").hasRole(UserRole.ONG.name())
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -48,5 +52,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+
 
 }
