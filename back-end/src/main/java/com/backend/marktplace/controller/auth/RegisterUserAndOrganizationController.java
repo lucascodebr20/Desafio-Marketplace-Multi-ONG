@@ -27,7 +27,7 @@ public class RegisterUserAndOrganizationController {
             String token = registerUserAndOrganizationService.registerUserAndOrganization(dto);
             Cookie cookie = new Cookie("JWT_TOKEN", token);
             cookie.setHttpOnly(true);
-            cookie.setSecure(false);
+            cookie.setSecure(true);
             cookie.setMaxAge(30 * 24 * 60 * 60);
             cookie.setPath("/");
             response.addCookie(cookie);

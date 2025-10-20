@@ -30,10 +30,6 @@ public class OrganizationEntity {
         return organizationId;
     }
 
-    public void setOrganizationId(UUID organizationId) {
-        this.organizationId = organizationId;
-    }
-
     public String getCNPJ() {
         return CNPJ;
     }

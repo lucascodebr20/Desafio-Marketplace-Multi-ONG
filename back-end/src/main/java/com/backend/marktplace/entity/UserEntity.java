@@ -38,6 +38,10 @@ public class UserEntity implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.name()));
+        if (userRole == UserRole.ADMIN) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_ONG"));
+        }
         if (userRole == UserRole.ONG) {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));}
         return authorities;
@@ -77,10 +81,6 @@ public class UserEntity implements UserDetails {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -116,4 +116,5 @@ public class UserEntity implements UserDetails {
     public void setOrganization(OrganizationEntity organization) {
         this.organization = organization;
     }
+
 }

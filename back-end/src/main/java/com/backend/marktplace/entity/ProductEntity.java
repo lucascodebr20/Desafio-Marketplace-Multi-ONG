@@ -40,10 +40,6 @@ public class ProductEntity {
         return productId;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
     public String getNameProduct() {
         return nameProduct;
     }
