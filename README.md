@@ -42,22 +42,13 @@ cd <NOME_DO_DIRETORIO>
 
 ### 3.3. Crie um arquivo .env
 
-### sudo nano .env
-
-### Chave secreta para a geração e validação de tokens JWT.
-### Use uma string longa e aleatória (ex: pode ser gerada com um gerador de senhas).
 JWT_SECRET_KEY=sua_chave_secreta_super_longa_e_segura_aqui
-
-### Configurações do Banco de Dados PostgreSQL (usadas pelo Docker Compose)
 DB_NAME=marketplace_db
 DB_USERNAME=admin
 DB_PASSWORD=supersecretpassword
-
-### Chave de API para o serviço de busca inteligente do Google Gemini
 SECRET_API_GEMINI=sua_chave_de_api_do_gemini_aqui
 
-
-Subir os Containers
+###Subir os Containers
 
 Com o Docker em execução, utilize o Docker Compose para construir as imagens e iniciar todos os serviços (backend, frontend e banco de dados):
 
