@@ -1,7 +1,6 @@
-package com.backend.marktplace.infra.cors;
+package com.backend.marktplace.infra.config;
 
 
-import com.backend.marktplace.infra.log.LoggingInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

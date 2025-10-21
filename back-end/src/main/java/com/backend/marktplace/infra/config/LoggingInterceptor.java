@@ -1,4 +1,4 @@
-package com.backend.marktplace.infra.log;
+package com.backend.marktplace.infra.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
