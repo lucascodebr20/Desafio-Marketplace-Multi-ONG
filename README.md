@@ -123,6 +123,18 @@ Para iniciar o projeto, você precisará ter o **Docker** e o **Docker Compose**
 2. **Crie o arquivo `.env`:**
 Dentro da pasta raiz, crie um arquivo chamado `.env` para armazenar as variáveis de ambiente com segurança:
 
+---
+
+JWT_SECRET_KEY=sua_chave_secreta_super_longa_e_segura_aqui
+
+DB_NAME=nome_do_banco_de_dados DB_USERNAME=admin 
+
+DB_PASSWORD=supersecretpassword
+
+DB_NAME=nome_do_banco_de_dados DB_USERNAME=admin DB_PASSWORD=supersecretpassword
+
+---
+
 3. **Inicie os Containers:**
 Execute o Docker Compose para subir o Backend, o Frontend e o Banco de Dados.
 
