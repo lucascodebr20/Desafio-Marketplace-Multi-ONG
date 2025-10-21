@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/product/**").permitAll()
                         .requestMatchers("/category/**").permitAll()
+                        .requestMatchers("/search/**").permitAll()
                         .requestMatchers("/organization/**").hasRole(UserRole.USER.name())
                         .requestMatchers("/user/**").hasRole(UserRole.USER.name())
                         .requestMatchers("/order/**").hasRole(UserRole.USER.name())
