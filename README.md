@@ -12,7 +12,7 @@ A aplicação foi desenvolvida com foco em uma **arquitetura robusta, segura e f
 ## 2. 🧰 Tecnologias Utilizadas
 
 - **Backend:** Java com Spring Boot  
-- **Frontend:** *(Especifique aqui, ex: React, Vue, Angular)*  
+- **Frontend:** React
 - **Banco de Dados:** PostgreSQL  
 - **Containerização:** Docker e Docker Compose  
 - **Autenticação:** JWT (JSON Web Tokens)  
