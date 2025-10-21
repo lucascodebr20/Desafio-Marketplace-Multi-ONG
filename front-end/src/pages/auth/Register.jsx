@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { redirect } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Tittle from '../../components/tittle/Tittle';
+import Title from '../../components/tittle/Title';
 
 function Register() {
 
@@ -64,9 +64,9 @@ function Register() {
         <main className="bg-gray-100 dark:bg-gray-900 min-h-screen flex items-center justify-center p-4">
             <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
 
-                <Tittle />
+                <Title className="text-3xl font-bold text-center mb-8" />
 
-                <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-8">
+                <h1 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-8">
                     Crie sua Conta
                 </h1>
 

@@ -1,68 +1,120 @@
+import React from 'react';
+import axios from 'axios';
+import {
+  FaBoxOpen, FaPlusCircle, FaReceipt, FaCog, FaSignOutAlt,
+  FaHome, FaUserCircle, FaTachometerAlt, FaUserCog, FaHistory
+} from 'react-icons/fa';
+
+const MenuItem = ({ href, icon, children }) => (
+  <li>
+    <a
+      href={href}
+      className="flex items-center gap-4 px-4 py-3 text-purple-100 rounded-lg hover:bg-purple-700 
+      transition-colors duration-200"
+    >
+      {icon}
+      <span>{children}</span>
+    </a>
+  </li>
+);
+
+const MenuTitle = ({ icon, children }) => (
+  <h3 className="px-4 mt-8 mb-2 text-xs font-semibold text-purple-300 
+  uppercase tracking-wider flex items-center gap-2">
+    {icon}
+    {children}
+  </h3>
+);
 
 
 function LeftMenu({ role, name }) {
+  const handleLogout = () => {
+    axios
+      .post('http://localhost:8080/auth/logout', {}, { withCredentials: true })
+      .then(() => {
+        setUserInfo(null);
+        window.location.href = '/login';
+      })
+      .catch((error) => {
+        console.error('Erro ao fazer logout:', error);
+        window.location.href = '/login';
+      });
+  };
+
   return (
 
-    <aside className="fixed top-0 left-0 h-full w-72 bg-white dark:bg-gray-800 shadow-xl p-6 flex flex-col">
-      
-      <div className="flex items-center gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
-        <div>
-          <p className="font-semibold text-gray-800 dark:text-white">Olá, {name}</p>
+    <aside className="fixed top-0 left-0 h-full w-72 bg-purple-900 text-white shadow-xl p-6 flex flex-col">
+      <div className="flex flex-col items-center gap-4 pb-6 border-b border-purple-800">
+        <a href="/" className="flex items-center gap-3 text-2xl font-bold text-white">
+          <FaHome />
+          <span>Início</span>
+        </a>
+        <div className="flex items-center gap-3 mt-4">
+          <FaUserCircle className="w-8 h-8 text-purple-300" />
+          <div>
+            <p className="font-semibold text-white">{name}</p>
+            <p className="text-xs text-purple-300">{role === 'ONG' ? 'Perfil ONG' : 
+            role === 'ADMIN' ? 'Perfil Administrador' : 'Perfil Usuerio'}</p>
+          </div>
         </div>
       </div>
 
       <nav className="mt-6 flex-1">
+
         {role === 'ONG' && (
-          <div className="mb-8">
-            <h3 className="px-4 mb-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-2">
-              <span className="w-4 h-4">
-              </span>
-              Painel da ONG
-            </h3>
+          <div>
+            <MenuTitle icon={<FaTachometerAlt />}>Painel da ONG</MenuTitle>
             <ul className="space-y-1">
-              <li>
-                <a href="/dashboard/register-product" className="flex items-center gap-3 px-4 py-2.5 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                  <span className="w-5 h-5 text-[#8b38d1]">
-                  </span>
-                  <span>Cadastrar Produto</span>
-                </a>
-              </li>
-              <li>
-                <a href="/dashboard/list-product" className="flex items-center gap-3 px-4 py-2.5 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                  <span className="w-5 h-5 text-[#8b38d1]">
-                  </span>
-                  <span>Listar Produtos</span>
-                </a>
-              </li>
+              <MenuItem href="/dashboard/register-product" icon={<FaPlusCircle size={20} />}>
+                Cadastrar Produto
+              </MenuItem>
+              <MenuItem href="/dashboard/list-product" icon={<FaBoxOpen size={20} />}>
+                Listar Produtos
+              </MenuItem>
             </ul>
           </div>
         )}
 
+        {role === 'ADMIN' && (
+          <div>
+            <MenuTitle icon={<FaTachometerAlt />}>Painel da ONG</MenuTitle>
+            <ul className="space-y-1">
+              <MenuItem href="/dashboard/register-category" icon={<FaPlusCircle size={20} />}>
+                Cadastar Categorias
+              </MenuItem>
+              <MenuItem href="/dashboard/log-pesquisa" icon={<FaHistory size={20} />}>
+                Log de Pesquisa
+              </MenuItem>
+            </ul>
+          </div>
+        )}
+
+
+
         <div>
-          <h3 className="px-4 mb-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-2">
-            <span className="w-4 h-4">
-            </span>
-            Minha Conta
-          </h3>
+          <MenuTitle icon={<FaUserCog />}>Minha Conta</MenuTitle>
           <ul className="space-y-1">
-            <li>
-              <a href="#" className="flex items-center gap-3 px-4 py-2.5 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                <span className="w-5 h-5">
-                </span>
-                <span>Meus Pedidos</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center gap-3 px-4 py-2.5 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                <span className="w-5 h-5">
-                </span>
-                <span>Configurações</span>
-              </a>
-            </li>
+            <MenuItem href="/dashboard/order" icon={<FaReceipt size={20} />}>
+              Meus Pedidos
+            </MenuItem>
+            <MenuItem href="/dashboard/configuration" icon={<FaCog size={20} />}>
+              Configurações
+            </MenuItem>
           </ul>
         </div>
       </nav>
-      
+
+      <div className="pt-6 border-t border-purple-800">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center justify-center gap-4 px-4 py-3 text-purple-100 bg-purple-800 
+          rounded-lg hover:bg-red-600 transition-colors duration-200 cursor-pointer"
+        >
+          <FaSignOutAlt size={20} />
+          <span>Sair</span>
+        </button>
+      </div>
+
     </aside>
   );
 }

@@ -6,12 +6,20 @@ function Product({ product, onEdit, onDelete }) {
 
     useEffect(() => {
         let isMounted = true; 
+        const currentBlobUrl = displayImageUrl;
 
         const loadImage = async () => {
             if (product.imageName) {
-                const blobUrl = await fetchImageAsBlobUrl(product.imageName);
-                if (isMounted) {
-                    setDisplayImageUrl(blobUrl);
+                try {
+                    const blobUrl = await fetchImageAsBlobUrl(product.imageName);
+                    if (isMounted) {
+                        setDisplayImageUrl(blobUrl);
+                    }
+                } catch (error) {
+                    console.error("Falha ao carregar a imagem:", error);
+                    if (isMounted) {
+                        setDisplayImageUrl('https://via.placeholder.com/150'); 
+                    }
                 }
             } else {
                 if (isMounted) {
@@ -24,11 +32,11 @@ function Product({ product, onEdit, onDelete }) {
 
         return () => {
             isMounted = false;
-            if (displayImageUrl && displayImageUrl.startsWith('blob:')) {
-                URL.revokeObjectURL(displayImageUrl);
+            if (currentBlobUrl && currentBlobUrl.startsWith('blob:')) {
+                URL.revokeObjectURL(currentBlobUrl);
             }
         };
-    }, [product.imageName, product.imageUrl, displayImageUrl]);
+    }, [product.imageName, product.imageUrl]);
 
     return (
         <div className="bg-white shadow-lg rounded-lg flex flex-col md:flex-row p-4 mb-4 transition-transform duration-300 hover:shadow-xl hover:scale-[1.02]">

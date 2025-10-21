@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import Tittle from '../../components/tittle/Tittle';
+import Title from '../../components/tittle/Title';
 import axios from 'axios';
 
 function Login() {
@@ -43,8 +43,8 @@ function Login() {
 
       <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
 
-        <Tittle />
-
+        <Title className="text-3xl font-bold text-center mb-8" />
+        
         <p className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-8">
           Acesse sua conta
         </p>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { deleteProduct } from '../../service/deleteProduct';
 import axios from 'axios';
-import Product from '../../components/productList/Product'; 
+import Product from '../../components/product/Product'; 
 
 function ProductCardSkeleton() {
     return (
