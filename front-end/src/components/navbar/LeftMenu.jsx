@@ -30,7 +30,7 @@ const MenuTitle = ({ icon, children }) => (
 function LeftMenu({ role, name }) {
   const handleLogout = () => {
     axios
-      .post('https://api.lucasbuild.xyz/logout', {}, { withCredentials: true })
+      .post('https://api.lucasbuild.xyz/auth/logout', {}, { withCredentials: true })
       .then(() => {
         setUserInfo(null);
         window.location.href = '/login';

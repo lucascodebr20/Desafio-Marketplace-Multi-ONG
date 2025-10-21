@@ -35,7 +35,7 @@ function ListProduct() {
             setLoading(true);
             setError(null);
             try {
-                const response = await axios.get(`http://localhost:8080/dashboard-product/list`, {
+                const response = await axios.get(`https://api.lucasbuild.xyz/dashboard-product/list`, {
                     withCredentials: true,
                     params: {
                         page: currentPage,

@@ -39,7 +39,7 @@ function HomePage() {
         }
 
         try {
-            const response = await axios.get(`http://localhost:8080/product/all?${params.toString()}`);
+            const response = await axios.get(`https://api.lucasbuild.xyz/product/all?${params.toString()}`);
             setProducts(response.data.content);
             setTotalPages(response.data.totalPages);
         } catch (err) {
@@ -78,7 +78,7 @@ function HomePage() {
         };
 
         try {
-            const response = await axios.post('http://localhost:8080/search', searchBody);
+            const response = await axios.post('https://api.lucasbuild.xyz/search', searchBody);
             setProducts(response.data.content);
             setTotalPages(response.data.totalPages);
         } catch (err) {

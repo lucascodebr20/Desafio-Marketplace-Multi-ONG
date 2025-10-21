@@ -39,7 +39,7 @@ function Register() {
         }
 
         if (isOng) {
-            axios.post('http://localhost:8080/auth/register-user-organization', dataToSubmit)
+            axios.post('https://api.lucasbuild.xyz/auth/register-user-organization', dataToSubmit)
                 .then(response => {
                     navigate('/login');
                 })
@@ -49,7 +49,7 @@ function Register() {
                 });
             return;
         } else {
-            axios.post('http://localhost:8080/auth/register-user', dataToSubmit)
+            axios.post('https://api.lucasbuild.xyz/auth/register-user', dataToSubmit)
                 .then(response => {
                     navigate('/login');
                 })

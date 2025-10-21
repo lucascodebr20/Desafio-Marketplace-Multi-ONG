@@ -51,7 +51,7 @@ function LogSearch() {
         const fetchLogs = async () => {
             try {
                 const response = await axios.get(
-                    'http://localhost:8080/dashboard-admin/search-log',
+                    'https://api.lucasbuild.xyz/dashboard-admin/search-log',
                     { withCredentials: true }
                 );
                 setLogs(response.data);

@@ -22,7 +22,7 @@ function Cart() {
 
             try {
                 const productPromises = itemsFromStorage.map(item =>
-                    axios.get(`http://localhost:8080/product/${item.productId}`)
+                    axios.get(`https://desafio.lucasbuild.xyz/product/${item.productId}`)
                 );
                 const responses = await Promise.all(productPromises);
                 const combinedData = itemsFromStorage.map(item => {
@@ -98,7 +98,7 @@ function Cart() {
 
     try {
         const response = await axios.post(
-            'http://localhost:8080/order/new-order', orderData, 
+            'https://api.lucasbuild.xyz/order/new-order', orderData, 
             { withCredentials: true } 
         );
 

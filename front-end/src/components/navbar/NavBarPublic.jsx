@@ -22,7 +22,7 @@ function NavBarPublic({ onSearch }) {
 
   const handleLogout = () => {
     axios
-      .post('http://localhost:8080/auth/logout', {}, { withCredentials: true })
+      .post('https://api.lucasbuild.xyz/auth/logout', {}, { withCredentials: true })
       .then(() => {
         setUserInfo(null);
         window.location.href = '/login';

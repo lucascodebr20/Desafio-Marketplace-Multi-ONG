@@ -61,7 +61,7 @@ function RegisterProduct() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const url = "http://localhost:8080/dashboard-product";
+        const url = "https://api.lucasbuild.xyz/dashboard-product";
         const config = { withCredentials: true };
 
         try {

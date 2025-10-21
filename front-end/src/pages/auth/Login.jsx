@@ -19,7 +19,7 @@ function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    axios.post('http://localhost:8080/auth/login', {
+    axios.post('https://api.lucasbuild.xyz/auth/login', {
       email: formData.email,
       password: formData.password
     }, { withCredentials: true })

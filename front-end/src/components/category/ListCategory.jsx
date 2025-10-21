@@ -10,7 +10,7 @@ function ListCategory({ categories, loading, onCategoryDeleted }) {
             return;
         }
         try {
-            await axios.delete(`http://localhost:8080/dashboard-admin/${categoryId}`, { withCredentials: true });
+            await axios.delete(`https://api.lucasbuild.xyz/dashboard-admin/${categoryId}`, { withCredentials: true });
             toast.success('Categoria deletada com sucesso!');
             onCategoryDeleted(categoryId);
         } catch (err) {

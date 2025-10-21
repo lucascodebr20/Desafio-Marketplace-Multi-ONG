@@ -17,7 +17,7 @@ function PageProduct() {
         setProductDetails(null);
         setError('');
 
-        axios.get(`http://localhost:8080/product/${productId}`)
+        axios.get(`https://api.lucasbuild.xyz/product/${productId}`)
             .then(response => {
                 setProductDetails(response.data);
             })

@@ -14,7 +14,7 @@ function RegisterCategory() {
         const fetchCategories = async () => {
             setLoadingList(true);
             try {
-                const response = await axios.get('http://localhost:8080/category', { withCredentials: true });
+                const response = await axios.get('https://api.lucasbuild.xyz/category', { withCredentials: true });
                 setCategories(response.data);
             } catch (err) {
                 toast.error("Não foi possível carregar as categorias.");
@@ -33,7 +33,7 @@ function RegisterCategory() {
         }
 
         setLoadingForm(true);
-        const url = 'http://localhost:8080/dashboard-admin/register-category';
+        const url = 'https://api.lucasbuild.xyz/dashboard-admin/register-category';
         const requestBody = { nameCategory };
 
         try {
