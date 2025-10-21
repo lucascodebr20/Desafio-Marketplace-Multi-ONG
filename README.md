@@ -43,9 +43,13 @@ cd <NOME_DO_DIRETORIO>
 ### 3.3. Crie um arquivo .env
 
 JWT_SECRET_KEY=sua_chave_secreta_super_longa_e_segura_aqui
+
 DB_NAME=marketplace_db
+
 DB_USERNAME=admin
+
 DB_PASSWORD=supersecretpassword
+
 SECRET_API_GEMINI=sua_chave_de_api_do_gemini_aqui
 
 ###Subir os Containers
