@@ -1,21 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Toaster, toast } from 'react-hot-toast';
-import { getProductFormData, updateProduct } from '../../service/updateProductService';
-import { fetchImageAsBlobUrl } from '../../service/downImage';
-
+import * as productService from '../../service/productService'; 
 
 function UpdateProduct() {
     const { productId } = useParams();
-    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         nameProduct: '',
         description: '',
         price: '',
         stockQty: '',
-        weightGrams: ''
+        weightGrams: '',
+        productId: ''
     });
 
+    const [allCategories, setAllCategories] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
     const [uploadMethod, setUploadMethod] = useState('upload');
     const [imageUrl, setImageUrl] = useState('');
     const [imageFile, setImageFile] = useState(null);
@@ -25,32 +25,34 @@ function UpdateProduct() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const product = await getProductFormData(productId);
+                const { product, categories, imagePreview } = await productService.getUpdatePageData(productId);
+
                 setFormData({
                     nameProduct: product.nameProduct || '',
                     description: product.description || '',
                     price: product.price || '',
                     stockQty: product.stockQty || '',
-                    weightGrams: product.weightGrams || ''
+                    weightGrams: product.weightGrams || '',
+                    productId: product.productId || ''
                 });
 
-                console.log('Dados do produto carregados:', product);
+                setAllCategories(categories);
+                setImagePreview(imagePreview);
 
-                if (product.imageName) { 
-                    setUploadMethod('upload');
-                    const existingImageBlobUrl = await fetchImageAsBlobUrl(product.imageName);
-                    setImagePreview(existingImageBlobUrl);
+                if (product.categories?.length > 0) {
+                    setSelectedCategories(product.categories.map(cat => cat.categoryId));
                 }
 
-            } catch {
-                toast.error('Não foi possível carregar os dados do produto.');
+            } catch (error) {
+                toast.error('Não foi possível carregar os dados da página.');
             }
         };
 
-        if (productId) fetchData();
+        if (productId) {
+            fetchData();
+        }
     }, [productId]);
     
-    // Efeito para limpar a memória da URL do blob (está correto, sem mudanças)
     useEffect(() => {
         return () => {
             if (imagePreview && imagePreview.startsWith('blob:')) {
@@ -59,14 +61,35 @@ function UpdateProduct() {
         };
     }, [imagePreview]);
 
+    const handleSubmit = async (e) => {
 
-    // As funções abaixo lidam com NOVAS imagens (upload ou URL) e estão corretas
+        e.preventDefault();
+        toast.loading('Atualizando produto...');
+
+        const dataToSubmit = { ...formData, categoryIds: selectedCategories };
+
+        try {
+            await productService.updateProduct(dataToSubmit, uploadMethod, imageFile, imageUrl);
+            toast.dismiss(); 
+            toast.success('Produto atualizado com sucesso!');
+        } catch (error) {
+            toast.dismiss();
+            const errorMessage = error.response?.data?.message || 'Falha ao atualizar o produto.';
+            toast.error(errorMessage);
+        }
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+        setFormData(prevState => ({ ...prevState, [name]: value }));
+    };
+
+    const handleCategoryChange = (categoryId) => {
+        setSelectedCategories(prevSelected =>
+            prevSelected.includes(categoryId)
+                ? prevSelected.filter(id => id !== categoryId)
+                : [...prevSelected, categoryId]
+        );
     };
 
     const handleImageChange = (e) => {
@@ -83,38 +106,18 @@ function UpdateProduct() {
         setImageUrl(url);
         setImagePreview(url); 
         setImageFile(null);
-        if (fileInputRef.current) {
-            fileInputRef.current.value = "";
-        }
-    };
-    
-    // A função de submit está correta, sem mudanças
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        toast.loading('Atualizando produto...');
-
-        try {
-            await updateProduct(productId, formData, uploadMethod, imageFile, imageUrl);
-            toast.dismiss(); 
-            toast.success('Produto atualizado com sucesso!');
-        } catch (error) {
-            toast.dismiss();
-            console.error('Ocorreu um erro ao atualizar o produto:', error);
-            const errorMessage = error.response?.data?.message || 'Falha ao atualizar o produto.';
-            toast.error(errorMessage);
-        }
+        if (fileInputRef.current) fileInputRef.current.value = "";
     };
 
     const inputStyle = "w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600";
     const labelStyle = "block text-sm font-semibold text-gray-800 mb-1.5";
 
     return (
-        // O JSX não precisa de nenhuma alteração
         <div>
             <Toaster position="top-right" reverseOrder={false} />
             <h1 className="text-3xl font-bold text-gray-900 mb-6">Editar Produto</h1>
             <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                     <div className="lg:col-span-1">
                         <label className={labelStyle}>Imagem do Produto</label>
                         <div className="flex border-b border-gray-200 mb-2">
@@ -128,7 +131,6 @@ function UpdateProduct() {
                                 <div 
                                     className="mt-1 w-full aspect-square bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-colors"
                                     onClick={() => fileInputRef.current.click()}>
-                                    {/* ✅ 3. LÓGICA DE PREVIEW ATUALIZADA para ser mais robusta */}
                                     {imagePreview ? (
                                         <img src={imagePreview} alt="Pré-visualização" className="w-full h-full object-cover rounded-lg" />
                                     ) : (
@@ -153,7 +155,6 @@ function UpdateProduct() {
                         )}
                     </div>
                     
-                    {/* O resto do formulário permanece igual */}
                     <div className="lg:col-span-2">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="md:col-span-2">
@@ -175,6 +176,31 @@ function UpdateProduct() {
                             <div>
                                 <label htmlFor="weightGrams" className={labelStyle}>Peso (gramas)</label>
                                 <input type="number" name="weightGrams" id="weightGrams" placeholder="Ex: 250" value={formData.weightGrams} onChange={handleChange} className={inputStyle} />
+                            </div>
+
+                            <div className="md:col-span-2">
+                                <label className={labelStyle}>Categorias</label>
+                                <div className="mt-2 p-4 border border-gray-200 rounded-lg max-h-48 overflow-y-auto">
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                        {allCategories.length > 0 ? allCategories.map(category => (
+                                            <div key={category.categoryId} className="flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    id={`category-${category.categoryId}`}
+                                                    value={category.categoryId}
+                                                    checked={selectedCategories.includes(category.categoryId)}
+                                                    onChange={() => handleCategoryChange(category.categoryId)}
+                                                    className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                                                />
+                                                <label htmlFor={`category-${category.categoryId}`} className="ml-2 text-sm text-gray-700">
+                                                    {category.nameCategory}
+                                                </label>
+                                            </div>
+                                        )) : (
+                                            <p className="text-sm text-gray-500 col-span-full">Nenhuma categoria encontrada.</p>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

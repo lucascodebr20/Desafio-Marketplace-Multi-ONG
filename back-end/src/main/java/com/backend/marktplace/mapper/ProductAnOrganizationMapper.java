@@ -16,7 +16,9 @@ public class ProductAnOrganizationMapper {
                productEntity.getImageName(),
                productEntity.getStockQty(),
                productEntity.getWeightGrams(),
-               productEntity.getOrganization().getOrganizationName()
+               productEntity.getOrganization().getOrganizationName(),
+               productEntity.getCategories().stream()
+                       .map(CategoryMapper::toCategoryDTO).toList()
        );
    }
 

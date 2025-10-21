@@ -27,14 +27,24 @@ public class ProductEntity {
     private int stockQty;
     private int weightGrams;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable( joinColumns = @JoinColumn(name = "product_id"),
-                inverseJoinColumns = @JoinColumn(name = "category_id"))
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable( name = "tb_product_categories", joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<CategoryEntity> categories;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "organization_id")
     private OrganizationEntity organization;
+
+    public void addCategory(CategoryEntity category) {
+        this.categories.add(category);
+        category.getProducts().add(this);
+    }
+
+    public void removeCategory(CategoryEntity category) {
+        this.categories.remove(category);
+        category.getProducts().remove(this);
+    }
 
     public Long getProductId() {
         return productId;

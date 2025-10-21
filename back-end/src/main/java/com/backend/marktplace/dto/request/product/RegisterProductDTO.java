@@ -1,6 +1,9 @@
 package com.backend.marktplace.dto.request.product;
 
+import com.backend.marktplace.dto.request.category.RegisterCategoryProductDTO;
+
 import java.math.BigDecimal;
+import java.util.List;
 
 public record RegisterProductDTO (
         String nameProduct,
@@ -8,4 +11,5 @@ public record RegisterProductDTO (
         BigDecimal price,
         String imageUrl,
         int stockQty,
-        int weightGrams) { }
+        int weightGrams,
+        List<RegisterCategoryProductDTO> categoryList){};

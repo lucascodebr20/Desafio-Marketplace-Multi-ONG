@@ -15,21 +15,44 @@ function DashBoard() {
                 const data = await getUserData();
                 setUserData(data);
             } catch (err) {
+                console.error(err);
                 setError("Falha ao carregar os dados do usuário.");
             } finally {
                 setLoading(false);
             }
-        }; loadUserData();
+        }; 
+        loadUserData();
     }, []);
 
-    if (loading) { return <p>Carregando...</p>; }
+    if (loading) { 
+        return <p className="text-center mt-10">Carregando...</p>; 
+    }
 
-    if (error) { return <p style={{ color: "red" }}>{error}</p>; }
+    if (error) { 
+        return <p className="text-center mt-10 text-red-500">{error}</p>; 
+    }
+
+    let displayName = '';
+    if (userData) { 
+        switch (userData.userRole) {
+            case 'ONG':
+                displayName = userData.organizationName;
+                break;
+            case 'USER':
+                displayName = userData.name;
+                break;
+            case 'ADMIN':
+                displayName = 'Admin';
+                break;
+            default:
+                displayName = 'Visitante';
+        }
+    }
 
     return (
         <div className="flex bg-[#e8e6e8] min-h-screen">
-            <LeftMenu role={userData.userRole} name={userData.name} />
-            <main className="flex-1 p-6 ml-72 bg-gray-50">
+            <LeftMenu role={userData.userRole} name={displayName} />
+            <main className="flex-1 p-6 ml-72"> 
                 <Outlet />
             </main>
         </div>

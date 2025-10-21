@@ -1,6 +1,7 @@
 package com.backend.marktplace.controller.category;
 
 import com.backend.marktplace.dto.request.category.RegisterCategoryDTO;
+import com.backend.marktplace.entity.CategoryEntity;
 import com.backend.marktplace.service.category.RegisterCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +19,9 @@ public class RegisterCategoryController {
     RegisterCategoryService registerCategoryService;
 
     @PostMapping("/register-category")
-    public ResponseEntity<HttpStatus> registerCategory(
-            @RequestBody RegisterCategoryDTO registerCategoryDTO) {
-        registerCategoryService.registerCategory(registerCategoryDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<CategoryEntity> registerCategory(@RequestBody RegisterCategoryDTO dto) {
+        CategoryEntity novaCategoria = registerCategoryService.registerCategory(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novaCategoria);
     }
 
 
