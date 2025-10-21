@@ -1,6 +1,7 @@
 package com.backend.marktplace.controller.product;
 
 import com.backend.marktplace.dto.request.product.RegisterProductDTO;
+import com.backend.marktplace.dto.request.product.UpdateProductDTO;
 import com.backend.marktplace.dto.response.product.ProductDTO;
 import com.backend.marktplace.entity.UserEntity;
 import com.backend.marktplace.service.product.UpdateProductService;
@@ -24,12 +25,12 @@ public class UpdateProductController {
 
     @PutMapping(path = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateProduct(
-            ProductDTO productDTO, @RequestParam (value = "imageFile", required = false) MultipartFile imageFile) {
+            UpdateProductDTO updateProductDTO, @RequestParam (value = "imageFile", required = false) MultipartFile imageFile) {
         try {
             var authentication = SecurityContextHolder.getContext().getAuthentication();
             UserEntity user = (UserEntity) authentication.getPrincipal();
             UUID organizationId = user.getOrganization().getOrganizationId();
-            updateProductService.updateProduct(productDTO, organizationId, imageFile);
+            updateProductService.updateProduct(updateProductDTO, organizationId, imageFile);
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         } catch (RuntimeException e) {
             e.printStackTrace();

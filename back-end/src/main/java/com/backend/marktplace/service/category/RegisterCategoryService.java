@@ -12,7 +12,7 @@ public class RegisterCategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public void registerCategory(RegisterCategoryDTO registerCategoryDTO) {
+    public CategoryEntity registerCategory(RegisterCategoryDTO registerCategoryDTO) {
 
         if (categoryRepository.existsByNameCategory(registerCategoryDTO.nameCategory())){
             throw new RuntimeException("Categoria já cadastrada");
@@ -21,7 +21,7 @@ public class RegisterCategoryService {
         CategoryEntity category = new CategoryEntity();
         category.setNameCategory(registerCategoryDTO.nameCategory());
         categoryRepository.save(category);
-
+        return category;
     }
 
 }
