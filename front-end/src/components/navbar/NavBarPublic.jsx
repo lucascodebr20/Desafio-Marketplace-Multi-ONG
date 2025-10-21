@@ -1,23 +1,21 @@
-import { useEffect, useState } from 'react';
-import Title from '../../components/tittle/Title';
+
+import { useState } from 'react';
+import Title from '../tittle/Title';
 import { FaShoppingCart } from 'react-icons/fa';
 import { IoMdExit } from 'react-icons/io';
 import { BsRobot } from 'react-icons/bs';
 import { getUserData } from '../../service/userInfoService';
 import axios from 'axios';
+import { useEffect } from 'react';
 
-function NavBarPublic() {
+function NavBarPublic({ onSearch }) {
   const [userInfo, setUserInfo] = useState(null);
   const [isCartEmpty, setIsCartEmpty] = useState(true);
   const [isSmartSearchEnabled, setSmartSearchEnabled] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
-    getUserData().then((data) => {
-      setUserInfo(data);
-    });
-  }, []);
-
-  useEffect(() => {
+    getUserData().then((data) => setUserInfo(data));
     const cartStatus = localStorage.getItem('CartIsEmpty');
     setIsCartEmpty(cartStatus !== 'false');
   }, []);
@@ -35,17 +33,35 @@ function NavBarPublic() {
       });
   };
 
+  const handleInputChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (onSearch) {
+      onSearch(searchText, isSmartSearchEnabled);
+    }
+  };
+
+  const handleSmartToggle = () => {
+    setSmartSearchEnabled(!isSmartSearchEnabled);
+  };
+  
   return (
     <nav className="bg-white shadow-md px-6 py-3 flex items-center justify-between space-x-6">
       <div className="flex-1">
         <Title className="text-xl font-semibold text-center" />
       </div>
-      <div className="w-full max-w-lg">
+      
+      <form className="w-full max-w-lg" onSubmit={handleSearchSubmit}>
         <div className="relative">
           <input
             type="text"
             placeholder="Buscar produto..."
             className="w-full px-4 pr-24 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={searchText}
+            onChange={handleInputChange}
           />
           <div className="absolute inset-y-0 right-0 flex items-center pr-3">
             <label
@@ -54,22 +70,23 @@ function NavBarPublic() {
               title="Pesquisa Inteligente"
             >
               <BsRobot
-                className={`h-5 w-5 mr-2 transition-colors duration-200 ${isSmartSearchEnabled
-                  ? 'text-[#8b38d1]'
-                  : 'text-gray-400 group-hover:text-gray-600'
-                  }`}
+                className={`h-5 w-5 mr-2 transition-colors duration-200 ${
+                  isSmartSearchEnabled
+                    ? 'text-[#8b38d1]'
+                    : 'text-gray-400 group-hover:text-gray-600'
+                }`}
               />
               <input
                 id="smart-search-checkbox"
                 type="checkbox"
                 checked={isSmartSearchEnabled}
-                onChange={() => setSmartSearchEnabled(!isSmartSearchEnabled)}
+                onChange={handleSmartToggle}
                 className="h-4 w-4 rounded border-gray-300 text-[#8b38d1] focus:ring-[#8b38d1] focus:ring-offset-0"
               />
             </label>
           </div>
         </div>
-      </div>
+      </form>
 
       <div className="flex-1 flex justify-end">
         <div className="flex items-center space-x-4">
@@ -101,7 +118,6 @@ function NavBarPublic() {
                 hover:bg-red-100"
                 title="Sair"
               >
-                {' '}
                 <IoMdExit size={24} />
               </button>
             </div>

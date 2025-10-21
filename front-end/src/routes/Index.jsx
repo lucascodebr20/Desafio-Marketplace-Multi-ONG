@@ -12,6 +12,8 @@ import Cart from '../pages/cart/Cart.jsx';
 import OrderUser from '../pages/dashboard/OrderUser.jsx';
 import Configuration from '../pages/dashboard/Configuration.jsx';
 import RegisterCategory from '../pages/dashboard/RegisterCategory.jsx';
+import LogSearch from '../pages/dashboard/LogSearch.jsx';
+
 
 function Index() {
   return (
@@ -28,6 +30,7 @@ function Index() {
         <Route path="order" element={<OrderUser />} />
         <Route path="configuration" element={<Configuration />} />
         <Route path="register-category" element={<RegisterCategory />} />
+        <Route path="log-pesquisa" element={<LogSearch />} />
       </Route>
     </Routes>
   );
