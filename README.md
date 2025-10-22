@@ -122,6 +122,7 @@ Para iniciar o projeto, você precisará ter o **Docker** e o **Docker Compose**
 1. **Clone o Repositório:**
 
 2. **Crie o arquivo `.env`:**
+   
 Dentro da pasta raiz, crie um arquivo chamado `.env` para armazenar as variáveis de ambiente com segurança:
 
 ---
