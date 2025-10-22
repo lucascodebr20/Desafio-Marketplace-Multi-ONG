@@ -57,8 +57,6 @@ public class GeminiApi {
                 .bodyToMono(GeminiResponse.class)
                 .block();
 
-        System.out.println("Resposta recebida do Gemini: " + geminiResponse);
-
         if (geminiResponse != null && !geminiResponse.candidates().isEmpty()) {
             // Retornamos o texto puro, que esperamos ser um JSON
             return geminiResponse.candidates().getFirst().content().parts().getFirst().text();
