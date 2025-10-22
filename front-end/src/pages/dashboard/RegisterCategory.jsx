@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../../config/api.js';
 import axios from 'axios';
 import { Toaster, toast } from 'react-hot-toast';
 import ListCategory from '../../components/category/ListCategory.jsx'; // Ajuste o caminho se necessário
@@ -14,7 +15,7 @@ function RegisterCategory() {
         const fetchCategories = async () => {
             setLoadingList(true);
             try {
-                const response = await axios.get('http://localhost:8080/category', { withCredentials: true });
+                const response = await axios.get(`${API_URL}/category`, { withCredentials: true });
                 setCategories(response.data);
             } catch (err) {
                 toast.error("Não foi possível carregar as categorias.");
@@ -27,13 +28,14 @@ function RegisterCategory() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         if (!nameCategory.trim()) {
             toast.error('Por favor, preencha o nome da categoria.');
             return;
         }
 
         setLoadingForm(true);
-        const url = 'http://localhost:8080/dashboard-admin/register-category';
+        const url = `${API_URL}/dashboard-admin/register-category`;
         const requestBody = { nameCategory };
 
         try {

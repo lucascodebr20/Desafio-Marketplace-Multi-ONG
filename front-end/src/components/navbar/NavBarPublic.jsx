@@ -5,6 +5,7 @@ import { FaShoppingCart } from 'react-icons/fa';
 import { IoMdExit } from 'react-icons/io';
 import { BsRobot } from 'react-icons/bs';
 import { getUserData } from '../../service/userInfoService';
+import { API_URL } from '../../config/api';
 import axios from 'axios';
 import { useEffect } from 'react';
 
@@ -22,7 +23,7 @@ function NavBarPublic({ onSearch }) {
 
   const handleLogout = () => {
     axios
-      .post('http://localhost:8080/auth/logout', {}, { withCredentials: true })
+      .post(`${API_URL}/auth/logout`, {}, { withCredentials: true })
       .then(() => {
         setUserInfo(null);
         window.location.href = '/login';

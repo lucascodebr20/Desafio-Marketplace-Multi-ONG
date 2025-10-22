@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { API_URL } from '../../config/api';
 import { FaTrash } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
 
@@ -7,10 +8,9 @@ function ListCategory({ categories, loading, onCategoryDeleted }) {
     
     const handleDelete = async (categoryId) => {
         if (!window.confirm("Você tem certeza que deseja deletar esta categoria? Esta ação não pode ser desfeita.")) {
-            return;
-        }
+            return; }
         try {
-            await axios.delete(`http://localhost:8080/dashboard-admin/${categoryId}`, { withCredentials: true });
+            await axios.delete(`${API_URL}/dashboard-admin/${categoryId}`, { withCredentials: true });
             toast.success('Categoria deletada com sucesso!');
             onCategoryDeleted(categoryId);
         } catch (err) {

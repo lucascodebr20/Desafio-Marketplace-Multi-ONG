@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import {API_URL} from "../../config/api";
 import axios from "axios";
 import CartProduct from "../../components/product/CartProduct";
 import NavBarPublic from "../../components/navbar/NavBarPublic";
 import Footer from "../../components/footer/Footer";
+
 
 function Cart() {
 
@@ -22,7 +24,7 @@ function Cart() {
 
             try {
                 const productPromises = itemsFromStorage.map(item =>
-                    axios.get(`http://localhost:8080/product/${item.productId}`)
+                    axios.get(`${API_URL}/product/${item.productId}`)
                 );
                 const responses = await Promise.all(productPromises);
                 const combinedData = itemsFromStorage.map(item => {
@@ -98,7 +100,7 @@ function Cart() {
 
     try {
         const response = await axios.post(
-            'http://localhost:8080/order/new-order', orderData, 
+            `${API_URL}/order/new-order`, orderData, 
             { withCredentials: true } 
         );
 

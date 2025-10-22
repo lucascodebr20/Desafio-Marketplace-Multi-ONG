@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { fetchImageAsBlobUrl } from '../../service/downImage';
+import { API_URL } from '../../config/api';
 
 function ProductCard({ product }) {
+
     const [displayImageUrl, setDisplayImageUrl] = useState('https://via.placeholder.com/400x400?text=Carregando...');
 
     useEffect(() => {

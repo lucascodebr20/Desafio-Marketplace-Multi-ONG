@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CardOrderUser from "../../components/order/CardOrderUser";
+import { API_URL } from "../../config/api";
 import axios from "axios";
 
 function OrderUser() {
@@ -14,7 +15,7 @@ function OrderUser() {
             setLoading(true);
             setError(null);
             try {
-                const response = await axios.get(`http://localhost:8080/order`, {
+                const response = await axios.get(`${API_URL}/order`, {
                     withCredentials: true,
                     params: {
                         page: currentPage,

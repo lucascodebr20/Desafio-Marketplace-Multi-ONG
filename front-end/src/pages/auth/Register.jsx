@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { redirect } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../../config/api';
 import axios from 'axios';
 import Title from '../../components/tittle/Title';
 
@@ -39,7 +39,7 @@ function Register() {
         }
 
         if (isOng) {
-            axios.post('http://localhost:8080/auth/register-user-organization', dataToSubmit)
+            axios.post(`${API_URL}/auth/register-user-organization`, dataToSubmit)
                 .then(response => {
                     navigate('/login');
                 })
@@ -49,7 +49,7 @@ function Register() {
                 });
             return;
         } else {
-            axios.post('http://localhost:8080/auth/register-user', dataToSubmit)
+            axios.post(`${API_URL}/auth/register-user`, dataToSubmit)
                 .then(response => {
                     navigate('/login');
                 })

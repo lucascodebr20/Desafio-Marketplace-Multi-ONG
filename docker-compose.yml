@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./back-end
+    container_name: marketplace-backend
+    ports:
+      - "8088:8080"
+    environment:
+      SPRING_APPLICATION_NAME: "marketplace"
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: "org.postgresql.Driver"
+      SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
+      SPRING_JPA_SHOW_SQL: "true"
+      API_SECURITY_TOKEN_SECRET: ${JWT_SECRET_KEY}
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: "DEBUG"
+      GEMINI_API_KEY: ${SECRET_API_GEMINI}
+    networks:
+      - marketplace-network
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./front-end
+    container_name: marketplace-frontend
+    ports:
+      - "3000:80"
+    networks:
+      - marketplace-network
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:13-alpine
+    container_name: marketplace-db
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - marketplace-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  marketplace-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

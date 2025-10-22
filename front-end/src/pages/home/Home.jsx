@@ -5,6 +5,7 @@ import ProductCard from '../../components/product/CardProduct';
 import FilterHome from '../../components/filter/FilterHome';
 import NavBarPublic from '../../components/navbar/NavBarPublic';
 import Footer from '../../components/footer/Footer';
+import { API_URL } from '../../config/api';
 
 function HomePage() {
     const [products, setProducts] = useState([]);
@@ -39,7 +40,7 @@ function HomePage() {
         }
 
         try {
-            const response = await axios.get(`http://localhost:8080/product/all?${params.toString()}`);
+            const response = await axios.get(`${API_URL}/product/all?${params.toString()}`);
             setProducts(response.data.content);
             setTotalPages(response.data.totalPages);
         } catch (err) {
@@ -78,7 +79,7 @@ function HomePage() {
         };
 
         try {
-            const response = await axios.post('http://localhost:8080/search', searchBody);
+            const response = await axios.post(`${API_URL}/search`, searchBody);
             setProducts(response.data.content);
             setTotalPages(response.data.totalPages);
         } catch (err) {

@@ -1,10 +1,9 @@
 import axios from 'axios';
-
-const API_BASE_URL = 'http://localhost:8080';
+import {API_URL} from '../config/api';
 
 export const getProductFormData = async (productId) => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/dashboard-product/${productId}`, {
+        const response = await axios.get(`${API_URL}/dashboard-product/${productId}`, {
             withCredentials: true
         });
         return response.data;
@@ -15,7 +14,7 @@ export const getProductFormData = async (productId) => {
 };
 
 export const updateProduct = async (productId, formData, uploadMethod, imageFile, imageUrl) => {
-    const url = `${API_BASE_URL}/dashboard-product/update`;
+    const url = `${API_URL}/dashboard-product/update`;
 
     const dataToSubmit = new FormData();
 

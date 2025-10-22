@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const API_BASE_URL = 'http://localhost:8080';
+import { API_URL } from '../config/api';
 
 export const fetchImageAsBlobUrl = async (imageName) => {
     
@@ -8,7 +7,7 @@ export const fetchImageAsBlobUrl = async (imageName) => {
         return 'https://via.placeholder.com/150';
     }
 
-    const url = `${API_BASE_URL}/images/${imageName}`;
+    const url = `${API_URL}/images/${imageName}`;
 
     try {
         const response = await axios.get(url, { responseType: 'blob' });

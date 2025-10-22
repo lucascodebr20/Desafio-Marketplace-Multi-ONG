@@ -42,11 +42,18 @@ function OrderItem({ item }) {
 
 
 function CardOrderUser({ order }) {
+    
     const formattedDate = new Date(order.orderDate).toLocaleDateString('pt-BR', {
         day: '2-digit',
         month: 'long',
         year: 'numeric'
     });
+
+    const totalAmount = order.listOrder.reduce((acc, item) => {
+        const price = item.priceAtPurchase || 0;
+        const quantity = item.quantity || 0;
+        return acc + price * quantity;
+    }, 0);
 
     return (
         <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden mb-6">
@@ -72,7 +79,7 @@ function CardOrderUser({ order }) {
             <div className="bg-gray-50 p-4 text-right">
                 <p className="text-gray-600">Total do Pedido:</p>
                 <p className="text-2xl font-bold text-gray-900">
-                    R$ {order.totalAmount.toFixed(2)}
+                    R$ {totalAmount.toFixed(2)}
                 </p>
             </div>
         </div>
