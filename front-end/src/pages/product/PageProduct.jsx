@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import NavBarPublic from '../../components/navbar/NavBarPublic';
 import { fetchImageAsBlobUrl } from '../../service/downImage';
 import Footer from '../../components/footer/Footer';
+import { API_URL } from '../../config/api';
 import { Toaster, toast } from 'react-hot-toast';
 
 function PageProduct() {
@@ -17,7 +18,7 @@ function PageProduct() {
         setProductDetails(null);
         setError('');
 
-        axios.get(`https://api.lucasbuild.xyz/product/${productId}`)
+        axios.get(`${API_URL}/product/${productId}`)
             .then(response => {
                 setProductDetails(response.data);
             })

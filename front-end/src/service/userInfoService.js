@@ -1,7 +1,8 @@
 import axios from 'axios';
+import {API_URL} from '../config/api';
 
 const api = axios.create({
-  baseURL: 'https://api.lucasbuild.xyz',
+  baseURL: API_URL,
   withCredentials: true
 });
 

@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { validateImage, processImage } from '../../service/processImage';
 import { Toaster } from 'react-hot-toast';
 import { toast } from 'react-hot-toast';
+import { API_URL } from '../../config/api';
 import axios from 'axios';
 
 function RegisterProduct() {
@@ -61,7 +62,7 @@ function RegisterProduct() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const url = "https://api.lucasbuild.xyz/dashboard-product";
+        const url = `${API_URL}/dashboard-product`;
         const config = { withCredentials: true };
 
         try {

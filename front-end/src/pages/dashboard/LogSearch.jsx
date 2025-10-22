@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../../config/api';
 import axios from 'axios';
 
 function FilterDisplay({ jsonString }) {
@@ -51,7 +52,7 @@ function LogSearch() {
         const fetchLogs = async () => {
             try {
                 const response = await axios.get(
-                    'https://api.lucasbuild.xyz/dashboard-admin/search-log',
+                    `${API_URL}/dashboard-admin/search-log`,
                     { withCredentials: true }
                 );
                 setLogs(response.data);
@@ -92,8 +93,7 @@ function LogSearch() {
     const handleDownloadCSV = () => {
         if (logs.length === 0) {
             alert("Não há dados para exportar.");
-            return;
-        }
+            return;}
         const csvHeader = ["Input da Busca", "Filtros Gerados", "Sucesso", "Fallback Aplicado", "Qtd. Itens", "Data de Criação"].join(',');
         const csvRows = logs.map(log => [
             `"${log.searchInput || ''}"`,

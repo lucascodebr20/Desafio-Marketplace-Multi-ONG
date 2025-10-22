@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { deleteProduct } from '../../service/deleteProduct';
+import { API_URL } from '../../config/api';
 import axios from 'axios';
 import Product from '../../components/product/Product'; 
 
@@ -35,7 +36,7 @@ function ListProduct() {
             setLoading(true);
             setError(null);
             try {
-                const response = await axios.get(`https://api.lucasbuild.xyz/dashboard-product/list`, {
+                const response = await axios.get(`${API_URL}/dashboard-product/list`, {
                     withCredentials: true,
                     params: {
                         page: currentPage,

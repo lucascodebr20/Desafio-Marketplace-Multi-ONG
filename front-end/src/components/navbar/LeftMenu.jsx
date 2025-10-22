@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import {
-  FaBoxOpen, FaPlusCircle, FaReceipt, FaCog, FaSignOutAlt,
+import {API_URL} from '../../config/api';
+import { FaBoxOpen, FaPlusCircle, FaReceipt, FaCog, FaSignOutAlt,
   FaHome, FaUserCircle, FaTachometerAlt, FaUserCog, FaHistory
 } from 'react-icons/fa';
 
@@ -30,7 +30,7 @@ const MenuTitle = ({ icon, children }) => (
 function LeftMenu({ role, name }) {
   const handleLogout = () => {
     axios
-      .post('https://api.lucasbuild.xyz/auth/logout', {}, { withCredentials: true })
+      .post(`${API_URL}/auth/logout`, {}, { withCredentials: true })
       .then(() => {
         setUserInfo(null);
         window.location.href = '/login';
