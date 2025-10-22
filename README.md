@@ -141,6 +141,9 @@ Execute o Docker Compose para subir o Backend, o Frontend e o Banco de Dados.
 
 Após a inicialização, o backend estará acessível em `http://localhost:8080` (ou a porta configurada) e o frontend em `http://localhost:3000` (ou a porta configurada).
 
+Por padrão vai ser criado um usuario ADMIN com as seguintes credenciais: admin@gmail.com | 123456
+Você pode mudar a geração dessas credencias no back-end antes de executar o docker em src/main/java/com/backend/marktplace/component/DataSeeder.java
+
 <br/>
 
 ## 6. 🗺️ Rotas Principais
