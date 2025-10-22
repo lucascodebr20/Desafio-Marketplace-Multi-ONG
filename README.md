@@ -88,15 +88,13 @@ Esta foi a parte mais dinâmica do projeto. A Gemini API foi utilizada para tran
 3. O JSON retornado (exemplo abaixo) é usado para aplicar os filtros no banco de dados.
 
 **Usuario pesquisa: "Eu quero um carro bonito"**
+---
 
-Oque eu achava que iria receber:
-<br />
-----
+**Oque eu achava que iria receber:**
 { "Keywords": ["peugeot", "carro esportivo", "carro de luxo"], "Category": ["veiculo", "carro", "carro esportivo"], "Price": "null" }
 
-Oque realmente retornou:
+**Oque realmente retornou:**
 ---
-<br />
 <img width="956" height="190" alt="Captura de tela de 2025-10-21 15-49-38 (1)" src="https://github.com/user-attachments/assets/4dbb2c27-e7d5-40c2-a429-45ae99ed9423" />
 
 
