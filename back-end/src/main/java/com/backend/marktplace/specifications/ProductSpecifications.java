@@ -59,39 +59,41 @@ public class ProductSpecifications {
     public static Specification<ProductEntity> build(GeminiFilterDTO filters) {
         return (root, query, criteriaBuilder) -> {
 
-            List<Predicate> finalPredicates = new ArrayList<>();
-            List<Predicate> orPredicates = new ArrayList<>();
-
+            List<Predicate> orConditions = new ArrayList<>();
+            
             if (filters.keywords() != null && !filters.keywords().isEmpty()) {
                 List<Predicate> keywordOrGroup = new ArrayList<>();
                 for (String keyword : filters.keywords()) {
                     keywordOrGroup.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("nameProduct")), "%" + keyword.toLowerCase() + "%"));
                     keywordOrGroup.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), "%" + keyword.toLowerCase() + "%"));
-                } orPredicates.add(criteriaBuilder.or(keywordOrGroup.toArray(new Predicate[0])));
+                }
+                orConditions.add(criteriaBuilder.or(keywordOrGroup.toArray(new Predicate[0])));
             }
 
             if (filters.categories() != null && !filters.categories().isEmpty()) {
                 jakarta.persistence.criteria.Path<String> categoryNamePath = root.join("categories", JoinType.LEFT).get("nameCategory");
                 List<String> lowerCaseCategories = filters.categories().stream().map(String::toLowerCase).toList();
-                orPredicates.add(criteriaBuilder.lower(categoryNamePath).in(lowerCaseCategories));
+                orConditions.add(criteriaBuilder.lower(categoryNamePath).in(lowerCaseCategories));
             }
 
-            if (!orPredicates.isEmpty()) {
-                finalPredicates.add(criteriaBuilder.or(orPredicates.toArray(new Predicate[0])));
-            }
+            List<Predicate> priceAndGroup = new ArrayList<>();
 
             if (filters.priceMax() != null) {
-                finalPredicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), filters.priceMax()));
+                priceAndGroup.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), filters.priceMax()));
             }
             if (filters.priceMin() != null) {
-                finalPredicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), filters.priceMin()));
+                priceAndGroup.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), filters.priceMin()));
             }
 
-            if (finalPredicates.isEmpty()) {
+            if (!priceAndGroup.isEmpty()) {
+                orConditions.add(criteriaBuilder.and(priceAndGroup.toArray(new Predicate[0])));
+            }
+
+            if (orConditions.isEmpty()) {
                 return criteriaBuilder.conjunction();
             }
 
-            return criteriaBuilder.and(finalPredicates.toArray(new Predicate[0]));
+            return criteriaBuilder.or(orConditions.toArray(new Predicate[0]));
         };
     }
 

@@ -34,11 +34,11 @@ public class GeminiApi {
     Sua resposta DEVE SER APENAS o objeto JSON, sem nenhum texto adicional, explicação ou markdown.  
 
     Exemplos:
-    - Usuário: "Tênis de corrida masculino abaixo de 500 reais"
-      JSON: {"keywords": ["tênis", "corrida", "masculino", "esportivo"], "category": ["Calçados", "Esporte", "Moda"], "price_max": 500.00, "price_min": null}
+    - Usuário: "Quero um boneco de herói"
+      JSON: {"keywords": ["herói", "protagonista", "salvador", "quadrinhos"], "category": ["Marvel", "DC", "Quadrinhos"], "price_max": 500.00, "price_min": null}
     
-    - Usuário: "celular samsung"
-      JSON: {"keywords": ["celular", "samsung", "smartphone", "android"], "category": ["Eletrônicos", "Celulares", "Tecnologia"], "price_max": null, "price_min": null}
+    - Usuário: "Quero um funko de princesa"
+      JSON: {"keywords": ["princesa","menina","rosa","disney"], "category": ["Disney", "Princesas", "Menina"], "price_max": null, "price_min": null}
 
     Agora, analise a seguinte busca do usuário:
     "%s"
