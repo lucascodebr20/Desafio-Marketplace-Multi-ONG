@@ -73,6 +73,9 @@ Um ponto de atenção no Marketplace foi o tratamento de pedidos que envolviam p
 
 2. O sistema, ao gerar o pedido, **separa-o automaticamente** em pedidos individuais, um para cada **`ONG`** envolvida.
 
+<br />
+
+<img width="1349" height="602" alt="Captura de tela de 2025-10-22 04-24-45 (1)" src="https://github.com/user-attachments/assets/980ff711-c6cf-48c9-b82d-0f26311b9e47" />
 Essa abordagem garante que cada ONG receba apenas o registro de seu pedido, mantendo a segregação de dados e facilitando a logística de envio por parte de cada organização.
 
 ### 4.4. Busca Inteligente (Google Gemini API)
