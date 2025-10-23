@@ -5,6 +5,7 @@ import com.backend.marktplace.entity.CategoryEntity;
 import com.backend.marktplace.entity.ProductEntity;
 import com.backend.marktplace.util.gemini.GeminiFilterDTO;
 import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -59,41 +60,52 @@ public class ProductSpecifications {
     public static Specification<ProductEntity> build(GeminiFilterDTO filters) {
         return (root, query, criteriaBuilder) -> {
 
-            List<Predicate> orConditions = new ArrayList<>();
-            
+            List<Predicate> optionalOrConditions = new ArrayList<>();
+
             if (filters.keywords() != null && !filters.keywords().isEmpty()) {
                 List<Predicate> keywordOrGroup = new ArrayList<>();
                 for (String keyword : filters.keywords()) {
-                    keywordOrGroup.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("nameProduct")), "%" + keyword.toLowerCase() + "%"));
-                    keywordOrGroup.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), "%" + keyword.toLowerCase() + "%"));
+                    String lowerKeyword = "%" + keyword.toLowerCase() + "%";
+                    keywordOrGroup.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("nameProduct")), lowerKeyword));
+                    keywordOrGroup.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), lowerKeyword));
                 }
-                orConditions.add(criteriaBuilder.or(keywordOrGroup.toArray(new Predicate[0])));
+                optionalOrConditions.add(criteriaBuilder.or(keywordOrGroup.toArray(new Predicate[0])));
             }
+
+            jakarta.persistence.criteria.Path<String> categoryNamePath = root.join("categories", JoinType.LEFT).get("nameCategory");
 
             if (filters.categories() != null && !filters.categories().isEmpty()) {
-                jakarta.persistence.criteria.Path<String> categoryNamePath = root.join("categories", JoinType.LEFT).get("nameCategory");
                 List<String> lowerCaseCategories = filters.categories().stream().map(String::toLowerCase).toList();
-                orConditions.add(criteriaBuilder.lower(categoryNamePath).in(lowerCaseCategories));
+                optionalOrConditions.add(criteriaBuilder.lower(categoryNamePath).in(lowerCaseCategories));
             }
 
-            List<Predicate> priceAndGroup = new ArrayList<>();
+            if (filters.priceMin() != null) {
+                optionalOrConditions.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), filters.priceMin()));
+            }
+
+            Predicate searchPredicate;
+
+            if (optionalOrConditions.isEmpty()) {
+                searchPredicate = criteriaBuilder.conjunction();
+            } else {
+                searchPredicate = criteriaBuilder.or(optionalOrConditions.toArray(new Predicate[0]));
+            }
+
+            List<Order> orderList = new ArrayList<>();
+            orderList.add(criteriaBuilder.asc(categoryNamePath));
+            orderList.add(criteriaBuilder.asc(root.get("price")));
+            orderList.add(criteriaBuilder.asc(criteriaBuilder.lower(root.get("nameProduct"))));
+            orderList.add(criteriaBuilder.asc(criteriaBuilder.lower(root.get("description"))));
+            assert query != null;
+            query.orderBy(orderList);
 
             if (filters.priceMax() != null) {
-                priceAndGroup.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), filters.priceMax()));
-            }
-            if (filters.priceMin() != null) {
-                priceAndGroup.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), filters.priceMin()));
+                Predicate finalMaxPriceFilter = criteriaBuilder.lessThanOrEqualTo(root.get("price"), filters.priceMax());
+                return criteriaBuilder.and(searchPredicate, finalMaxPriceFilter);
             }
 
-            if (!priceAndGroup.isEmpty()) {
-                orConditions.add(criteriaBuilder.and(priceAndGroup.toArray(new Predicate[0])));
-            }
+            return searchPredicate;
 
-            if (orConditions.isEmpty()) {
-                return criteriaBuilder.conjunction();
-            }
-
-            return criteriaBuilder.or(orConditions.toArray(new Predicate[0]));
         };
     }
 
