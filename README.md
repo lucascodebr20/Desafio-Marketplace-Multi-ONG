@@ -122,17 +122,20 @@ Para iniciar o projeto, você precisará ter o **Docker** e o **Docker Compose**
 1. **Clone o Repositório:**
 
 2. **Crie o arquivo `.env`:**
+   
 Dentro da pasta raiz, crie um arquivo chamado `.env` para armazenar as variáveis de ambiente com segurança:
 
 ---
 
 JWT_SECRET_KEY=sua_chave_secreta_super_longa_e_segura_aqui
 
-DB_NAME=nome_do_banco_de_dados DB_USERNAME=admin 
+DB_NAME=nome_do_banco_de_dados 
 
 DB_PASSWORD=supersecretpassword
 
-DB_NAME=nome_do_banco_de_dados DB_USERNAME=admin DB_PASSWORD=supersecretpassword
+DB_NAME=nome_do_banco_de_dados
+
+SECRET_API_GEMINI=sua_chave_api_gemini
 
 ---
 
