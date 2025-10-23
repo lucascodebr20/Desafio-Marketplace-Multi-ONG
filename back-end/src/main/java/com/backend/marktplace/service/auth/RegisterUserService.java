@@ -35,6 +35,10 @@ public class RegisterUserService {
             throw new IllegalArgumentException();
         }
 
+        if (userRepository.findAll().size() >= 1000) {
+            throw new RuntimeException("Limite de usuário excedido");
+        }
+
         String encryptedPassword = passwordEncoder.encode(registerUserDTO.password());
         UserEntity user = new UserEntity();
         user.setEmail(registerUserDTO.email().toLowerCase());

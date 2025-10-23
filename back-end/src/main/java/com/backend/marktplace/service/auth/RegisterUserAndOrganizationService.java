@@ -43,6 +43,10 @@ public class RegisterUserAndOrganizationService {
             throw new RuntimeException("CNPJ já cadastrado");
         }
 
+        if (userRepository.findAll().size() >= 1000) {
+            throw new RuntimeException("Limite de usuário excedido");
+        }
+
         String encryptedPassword = passwordEncoder.encode(dto.password());
         UserEntity user = new UserEntity();
         user.setEmail(dto.email().toLowerCase());

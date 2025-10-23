@@ -2,9 +2,13 @@
 
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
     </appender>
 
     <appender name="jsonFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -12,13 +16,12 @@
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/market-%d{yyyy-MM-dd}.log</fileNamePattern>
-
             <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="jsonConsoleAppender"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="jsonFileAppender"/>
     </root>
 

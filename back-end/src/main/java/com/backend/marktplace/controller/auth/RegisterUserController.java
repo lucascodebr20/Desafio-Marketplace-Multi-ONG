@@ -2,6 +2,7 @@ package com.backend.marktplace.controller.auth;
 
 import com.backend.marktplace.dto.request.auth.RegisterUserDTO;
 import com.backend.marktplace.service.auth.RegisterUserService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class RegisterUserController {
     @Autowired
     RegisterUserService registerUserService;
 
+    @RateLimiter(name = "authRateLimiter", fallbackMethod = "registerUserFallback")
     @PostMapping("/register-user")
     public ResponseEntity<String> registerUser (@RequestBody RegisterUserDTO registerUserDTO, HttpServletResponse response) {
 
@@ -43,6 +45,12 @@ public class RegisterUserController {
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro interno no servidor.");
         }
+    }
+
+    private ResponseEntity<String> registerUserFallback(RegisterUserDTO registerUserDTO, HttpServletResponse response, Throwable t) {
+        return ResponseEntity
+                .status(HttpStatus.TOO_MANY_REQUESTS)
+                .build();
     }
 
 
