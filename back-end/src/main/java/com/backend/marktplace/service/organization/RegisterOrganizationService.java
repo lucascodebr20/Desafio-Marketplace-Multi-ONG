@@ -9,7 +9,6 @@ import com.backend.marktplace.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.UUID;
 
 @Service
 public class RegisterOrganizationService {
@@ -29,6 +28,10 @@ public class RegisterOrganizationService {
 
         if (organizationRepository.existsByUser_UserId(user.getUserId())) {
             throw new RuntimeException("User already has an organization registered.");
+        }
+
+        if (organizationRepository.findAll().size() >= 2) {
+            throw new RuntimeException("Organization limit exceeded.");
         }
 
         OrganizationEntity organization = new OrganizationEntity();

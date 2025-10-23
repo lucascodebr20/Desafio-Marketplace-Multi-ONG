@@ -19,6 +19,8 @@ public class RegisterOrganizationController {
     @Autowired
     RegisterOrganizationService registerOrganizationService;
 
+    /*
+
     @PostMapping("/register")
     public ResponseEntity<HttpStatus> registerOrganization (
             @RequestBody RegisterOrganizationDTO registerOrganizationDTO){
@@ -33,5 +35,7 @@ public class RegisterOrganizationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    */
 
 }
